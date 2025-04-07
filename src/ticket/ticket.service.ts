@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma, Ticket } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { CreateTicketDto } from './dto/create-ticket-dto';
 
 @Injectable()
 export class TicketService {
@@ -33,8 +34,10 @@ export class TicketService {
     }
     return ticket;
   }
-  async createTicket(data: Prisma.TicketCreateInput): Promise<Ticket> {
-    return await this.prisma.ticket.create({ data });
+  async createTicket(createTicketDto: CreateTicketDto) {
+    return await this.prisma.ticket.create({
+      data: { ...createTicketDto, userId: 'ddd' },
+    });
   }
   async updateTicket(ticketId: string) {
     const beforeUpdateData = await this.prisma.ticket

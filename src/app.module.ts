@@ -9,9 +9,17 @@ import { AuthModule } from './auth/auth.module';
 import { StorageService } from './storage/storage.service';
 import { StorageController } from './storage/storage.controller';
 import { StorageModule } from './storage/storage.module';
+import { SupabaseModule } from './supabase/supabase.module';
 
 @Module({
-  imports: [PrismaModule, TicketModule, ReviewModule, AuthModule, StorageModule],
+  imports: [
+    PrismaModule,
+    TicketModule,
+    ReviewModule,
+    AuthModule,
+    StorageModule,
+    SupabaseModule,
+  ],
   controllers: [AppController, StorageController],
   providers: [AppService, SupabaseService, StorageService],
 })
