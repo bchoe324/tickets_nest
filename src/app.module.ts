@@ -10,6 +10,7 @@ import { StorageService } from './storage/storage.service';
 import { StorageController } from './storage/storage.controller';
 import { StorageModule } from './storage/storage.module';
 import { SupabaseModule } from './supabase/supabase.module';
+import { UploadModule } from './upload/upload.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { SupabaseModule } from './supabase/supabase.module';
     AuthModule,
     StorageModule,
     SupabaseModule,
+    UploadModule,
   ],
   controllers: [AppController, StorageController],
   providers: [AppService, SupabaseService, StorageService],

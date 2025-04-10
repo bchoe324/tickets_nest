@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma, Ticket } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateTicketDto } from './dto/create-ticket-dto';
+import { endOfMonth, lastDayOfMonth, startOfMonth } from 'date-fns';
 
 @Injectable()
 export class TicketService {
@@ -9,14 +10,15 @@ export class TicketService {
   async getAllTickets() {
     return await this.prisma.ticket.findMany();
   }
-  async getMonthlyTickets(year: number, month: number) {
-    const firstDayOfMonth = new Date(year, month - 1, 1);
-    const lastDayOfMonth = new Date(year, month, 0);
+  async getMonthlyTickets(year: number, month: number, userId: string) {
+    const startDay = startOfMonth(new Date(year, month, 1));
+    const lastDay = endOfMonth(new Date(year, month, 1));
     return await this.prisma.ticket.findMany({
       where: {
+        userId: userId,
         date: {
-          gte: firstDayOfMonth,
-          lte: lastDayOfMonth,
+          gte: startDay,
+          lte: lastDay,
         },
       },
     });
@@ -34,10 +36,31 @@ export class TicketService {
     }
     return ticket;
   }
-  async createTicket(createTicketDto: CreateTicketDto) {
-    return await this.prisma.ticket.create({
-      data: { ...createTicketDto, userId: 'ddd' },
+  async createTicket(
+    createTicketDto: CreateTicketDto,
+    imageUrl: string,
+    userId: string,
+  ) {
+    const { title, date, cast, theater, seat, price, site, review } =
+      createTicketDto;
+
+    await this.prisma.ticket.create({
+      data: {
+        title,
+        date,
+        cast,
+        theater,
+        seat,
+        price,
+        site,
+        review,
+        imageUrl,
+        userId,
+      },
     });
+    return {
+      message: '티켓 정보 등록',
+    };
   }
   async updateTicket(ticketId: string) {
     const beforeUpdateData = await this.prisma.ticket
