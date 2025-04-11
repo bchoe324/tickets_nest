@@ -9,6 +9,7 @@ import {
   UploadedFile,
   UseGuards,
   UseInterceptors,
+  Param,
 } from '@nestjs/common';
 import { TicketService } from './ticket.service';
 import { CreateTicketDto } from './dto/create-ticket-dto';
@@ -41,6 +42,15 @@ export class TicketController {
     }
     return this.ticketService.getMonthlyTickets(year, month, userId);
   }
+  @Get(':ticketId')
+  getATicket(
+    @Req() req: Request & { user: { id: string } },
+    @Param('ticketId') ticketId: string,
+  ) {
+    const userId = req.user.id;
+    return this.ticketService.getATicket(ticketId, userId);
+  }
+
   @Post('create')
   @UseInterceptors(FileInterceptor('image'))
   async createTicket(

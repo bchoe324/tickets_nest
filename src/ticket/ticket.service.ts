@@ -23,10 +23,11 @@ export class TicketService {
       },
     });
   }
-  async getATicket(ticketId: string): Promise<Ticket | null> {
+  async getATicket(ticketId: string, userId: string): Promise<Ticket | null> {
     const ticket = await this.prisma.ticket.findUnique({
       where: {
         id: ticketId,
+        userId: userId,
       },
     });
     if (!ticket) {
