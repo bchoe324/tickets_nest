@@ -31,7 +31,7 @@ export class ReviewService {
       },
     });
   }
-  async createReview(createReviewDto: CreateReviewDto) {
+  async createReview(createReviewDto: CreateReviewDto, userId: string) {
     let show = await this.prisma.show.findUnique({
       where: { id: createReviewDto.show.id },
     });
@@ -42,7 +42,7 @@ export class ReviewService {
     }
     return await this.prisma.review.create({
       data: {
-        userId: 'ddd',
+        userId: userId,
         showId: show.id,
         recommend: createReviewDto.recommend,
         review: createReviewDto.review,
