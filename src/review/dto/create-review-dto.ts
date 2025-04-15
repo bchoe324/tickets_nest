@@ -1,14 +1,28 @@
 import { Type } from 'class-transformer';
-import { IsBoolean, IsString } from 'class-validator';
+import {
+  IsBoolean,
+  IsNotEmpty,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
+
+class ShowDto {
+  @IsString()
+  @IsNotEmpty()
+  id: string;
+
+  @IsString()
+  @IsNotEmpty()
+  title: string;
+
+  @IsString()
+  poster: string;
+}
 
 export class CreateReviewDto {
-  show: {
-    id: string;
-    title: string;
-    duration: string;
-    theater: string;
-    poster: string;
-  };
+  @ValidateNested()
+  @Type(() => ShowDto)
+  show: ShowDto;
 
   @Type(() => Boolean)
   @IsBoolean()

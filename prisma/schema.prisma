@@ -51,8 +51,6 @@ model Review {
 model Show {
   id String @id
   title String
-  duration String
-  theater String
   poster String
   reviews Review[]
   bookmarks Bookmark[]

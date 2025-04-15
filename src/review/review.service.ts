@@ -7,6 +7,10 @@ export class ReviewService {
   constructor(private prisma: PrismaService) {}
   async getAllReviews() {
     return await this.prisma.review.findMany({
+      take: 30,
+      orderBy: {
+        createdAt: 'desc',
+      },
       include: {
         show: true,
       },
@@ -32,22 +36,29 @@ export class ReviewService {
     });
   }
   async createReview(createReviewDto: CreateReviewDto, userId: string) {
-    let show = await this.prisma.show.findUnique({
-      where: { id: createReviewDto.show.id },
-    });
-    if (!show) {
-      show = await this.prisma.show.create({
-        data: createReviewDto.show,
+    try {
+      let show = await this.prisma.show.findUnique({
+        where: { id: createReviewDto.show.id },
       });
+      if (!show) {
+        show = await this.prisma.show.create({
+          data: createReviewDto.show,
+        });
+      }
+      await this.prisma.review.create({
+        data: {
+          userId: userId,
+          showId: show.id,
+          recommend: createReviewDto.recommend,
+          review: createReviewDto.review,
+        },
+      });
+      return {
+        message: '티켓 정보 등록',
+      };
+    } catch (error) {
+      console.log(error);
     }
-    return await this.prisma.review.create({
-      data: {
-        userId: userId,
-        showId: show.id,
-        recommend: createReviewDto.recommend,
-        review: createReviewDto.review,
-      },
-    });
   }
   async deleteReview(reviewId: string) {
     await this.prisma.review.delete({
