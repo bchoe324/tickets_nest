@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateReviewDto } from './dto/create-review-dto';
 
@@ -30,11 +30,36 @@ export class ReviewService {
   async getMyReviews(userId: string) {
     // 리뷰 없으면 빈 배열 반환
     return await this.prisma.review.findMany({
+      orderBy: {
+        createdAt: 'desc',
+      },
       where: {
         userId: userId,
       },
+      include: {
+        show: true,
+      },
     });
   }
+  async getAReview(userId: string, reviewId: string) {
+    const review = await this.prisma.review.findUnique({
+      where: {
+        id: reviewId,
+        userId: userId,
+      },
+      include: {
+        show: true,
+      },
+    });
+    if (!review) {
+      console.log('review ID: ${reviewId}의 정보가 존재하지 않습니다.');
+      throw new NotFoundException(
+        `review ID: ${reviewId}의 정보가 존재하지 않습니다.`,
+      );
+    }
+    return review;
+  }
+
   async createReview(createReviewDto: CreateReviewDto, userId: string) {
     try {
       let show = await this.prisma.show.findUnique({
@@ -60,6 +85,28 @@ export class ReviewService {
       console.log(error);
     }
   }
+  async updateReview(userId: string, reviewId: string) {
+    const beforeUpdateData = await this.prisma.review
+      .findUnique({
+        where: {
+          userId: userId,
+          id: reviewId,
+        },
+      })
+      .catch((error) => console.log(error));
+    if (!beforeUpdateData) {
+      throw new NotFoundException(
+        `review ID: ${reviewId}의 정보가 존재하지 않습니다.`,
+      );
+    }
+    return await this.prisma.review.update({
+      where: {
+        id: reviewId,
+      },
+      data: {},
+    });
+  }
+
   async deleteReview(reviewId: string) {
     await this.prisma.review.delete({
       where: {

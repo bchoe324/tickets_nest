@@ -52,6 +52,9 @@ model Show {
   id String @id
   title String
   poster String
+  startDate String
+  endDate String
+  theater String
   reviews Review[]
   bookmarks Bookmark[]
 }

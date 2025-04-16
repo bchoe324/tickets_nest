@@ -17,6 +17,15 @@ class ShowDto {
 
   @IsString()
   poster: string;
+
+  @IsString()
+  startDate: string;
+
+  @IsString()
+  endDate: string;
+
+  @IsString()
+  theater: string;
 }
 
 export class CreateReviewDto {
