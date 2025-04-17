@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateReviewDto } from './dto/create-review-dto';
+import { UpdateReviewDto } from './dto/update-review-dto';
 
 @Injectable()
 export class ReviewService {
@@ -85,7 +86,11 @@ export class ReviewService {
       console.log(error);
     }
   }
-  async updateReview(userId: string, reviewId: string) {
+  async updateReview(
+    userId: string,
+    reviewId: string,
+    updateReviewDto: UpdateReviewDto,
+  ) {
     const beforeUpdateData = await this.prisma.review
       .findUnique({
         where: {
@@ -103,15 +108,18 @@ export class ReviewService {
       where: {
         id: reviewId,
       },
-      data: {},
+      data: { ...updateReviewDto },
     });
   }
 
-  async deleteReview(reviewId: string) {
-    await this.prisma.review.delete({
-      where: {
-        id: reviewId,
-      },
-    });
+  async deleteReview(userId: string, reviewId: string) {
+    await this.prisma.review
+      .delete({
+        where: {
+          id: reviewId,
+          userId: userId,
+        },
+      })
+      .catch((error) => console.log(error));
   }
 }
