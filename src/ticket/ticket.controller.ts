@@ -10,6 +10,8 @@ import {
   UseGuards,
   UseInterceptors,
   Param,
+  Patch,
+  Delete,
 } from '@nestjs/common';
 import { TicketService } from './ticket.service';
 import { CreateTicketDto } from './dto/create-ticket-dto';
@@ -17,6 +19,7 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UploadService } from 'src/upload/upload.service';
 import { Request } from 'express';
+import { UpdateTicketDto } from './dto/update-ticket-dto';
 
 @UseGuards(JwtAuthGuard)
 @Controller('ticket')
@@ -30,6 +33,7 @@ export class TicketController {
   getAllTickets() {
     return this.ticketService.getAllTickets();
   }
+
   @Get('monthly')
   getMonthlyTickets(
     @Query('year') year: number,
@@ -42,6 +46,7 @@ export class TicketController {
     }
     return this.ticketService.getMonthlyTickets(year, month, userId);
   }
+
   @Get(':ticketId')
   getATicket(
     @Req() req: Request & { user: { id: string } },
@@ -62,5 +67,36 @@ export class TicketController {
 
     const imageUrl = await this.uploadService.uploadImageFile(file, userId);
     return this.ticketService.createTicket(createTicketDto, imageUrl, userId);
+  }
+
+  @Patch(':ticketId')
+  @UseInterceptors(FileInterceptor('image'))
+  async updateTicket(
+    @Body() updateTicketDto: UpdateTicketDto,
+    @Req() req: Request & { user: { id: string } },
+    @Param('ticketId') ticketId: string,
+    @UploadedFile() file?: Express.Multer.File,
+  ) {
+    const userId = req.user.id;
+
+    const imageUrl = file
+      ? await this.uploadService.uploadImageFile(file, userId)
+      : null;
+
+    return this.ticketService.updateTicket(
+      userId,
+      ticketId,
+      updateTicketDto,
+      imageUrl,
+    );
+  }
+
+  @Delete(':ticketId')
+  async deleteTicket(
+    @Req() req: Request & { user: { id: string } },
+    @Param('ticketId') ticketId: string,
+  ) {
+    const userId = req.user.id;
+    return this.ticketService.deleteTicket(userId, ticketId);
   }
 }

@@ -1,31 +1,31 @@
 import { Type } from 'class-transformer';
 import { IsDate, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
-export class CreateTicketDto {
+export class UpdateTicketDto {
   @IsString()
   @IsNotEmpty()
   title: string;
 
   @Type(() => Date)
   @IsDate()
-  date: Date;
+  date?: Date;
 
   @IsString()
-  cast: string;
+  cast?: string;
 
   @IsString()
-  theater: string;
+  theater?: string;
 
   @IsString()
-  seat: string;
+  seat?: string;
 
   @IsString()
-  site: string;
+  site?: string;
 
   @Type(() => Number)
   @IsNumber()
-  price: number;
+  price?: number;
 
   @IsString()
-  review: string;
+  review?: string;
 }

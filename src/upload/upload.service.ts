@@ -29,6 +29,16 @@ export class UploadService {
     if (error) {
       throw new Error(`파일 업로드 실패: ${error.message}`);
     }
-    return data.fullPath;
+    return data.path;
+  }
+
+  async deleteImageFile(imageUrl: string) {
+    const supabase = this.supabaseService.getClient();
+    const { error } = await supabase.storage
+      .from('tickets-images')
+      .remove([imageUrl]);
+    if (error) {
+      throw new Error(`이미지 삭제 실패: ${error.message}`);
+    }
   }
 }
