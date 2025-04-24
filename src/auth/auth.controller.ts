@@ -3,7 +3,6 @@ import {
   Controller,
   Post,
   Get,
-  UseGuards,
   Req,
   Res,
   UnauthorizedException,
@@ -44,6 +43,30 @@ export class AuthController {
       message: '로그인 성공',
     };
   }
+  @Post('test-login')
+  async getTestUserLogin(@Res({ passthrough: true }) res: Response) {
+    const email = process.env.TEST_EMAIL;
+    const password = process.env.TEST_PW;
+    if (!email || !password) {
+      throw new Error(
+        'TEST_EMAIL or TEST_PW environment variables are not set',
+      );
+    }
+    const { accessToken } = await this.authService.getUserLogin(
+      { email, password },
+      'TEST',
+    );
+
+    res.cookie('access_token', accessToken, {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 30,
+    });
+
+    return {
+      message: '로그인 성공',
+    };
+  }
+
   @Post('refresh')
   refreshToken(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
     const refreshToken = (req.cookies as { [key: string]: string })?.[

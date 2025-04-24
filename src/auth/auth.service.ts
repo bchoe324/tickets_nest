@@ -42,7 +42,7 @@ export class AuthService {
       },
     });
   }
-  async getUserLogin(authLoginDto: AuthLoginDto) {
+  async getUserLogin(authLoginDto: AuthLoginDto, type?: 'TEST') {
     const { email, password } = authLoginDto;
     const { data, error } = await this.supabase.auth.signInWithPassword({
       email,
@@ -59,13 +59,15 @@ export class AuthService {
     };
     const accessToken = this.jwtService.sign(payload, {
       secret: process.env.JWT_ACCESS_SECRET,
-      expiresIn: '15m',
+      expiresIn: type === 'TEST' ? '30m' : '15m',
     });
     const refreshToken = this.jwtService.sign(payload, {
       secret: process.env.JWT_REFRESH_SECRET,
       expiresIn: '7d',
     });
-    return { accessToken, refreshToken };
+    const tokens =
+      type === 'TEST' ? { accessToken } : { accessToken, refreshToken };
+    return tokens;
   }
   async deleteUser(userId: string) {
     const { error } = await this.supabase.auth.admin.deleteUser(userId);
