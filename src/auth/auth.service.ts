@@ -49,9 +49,15 @@ export class AuthService {
       password,
     });
     if (error) {
-      throw new UnauthorizedException(error.message);
+      throw new UnauthorizedException({
+        code: 'INVALID_CREDENTIAL',
+        message: '이메일 또는 비밀번호가 올바르지 않습니다.',
+      });
     } else if (!data.user) {
-      throw new UnauthorizedException('User not found');
+      throw new UnauthorizedException({
+        code: 'USER_NOT_FOUND',
+        message: '사용자를 찾을 수 없습니다.',
+      });
     }
     const payload = {
       id: data.user.id,
@@ -80,9 +86,8 @@ export class AuthService {
       },
     });
   }
-  async refreshToken() {}
   async getUserInfo(userId: string) {
-    return await this.prisma.user.findUnique({
+    const data = await this.prisma.user.findUnique({
       where: { id: userId },
       select: {
         id: true,
@@ -92,6 +97,8 @@ export class AuthService {
         createdAt: true,
       },
     });
+    console.log(data);
+    return data;
   }
   async updateUserInfo() {}
 }

@@ -118,6 +118,7 @@ export class AuthController {
           secret: process.env.JWT_ACCESS_SECRET,
         },
       );
+      console.log(payload);
       return this.authService.getUserInfo(payload.id);
     } catch (error) {
       throw new UnauthorizedException('Invalid access token');
