@@ -9,7 +9,7 @@ async function bootstrap() {
   console.log('✅ NestFactory created');
 
   app.enableCors({
-    origin: ['https://tickets-ten-pi.vercel.app'],
+    origin: 'https://tickets-ten-pi.vercel.app',
     credentials: true,
   });
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
