@@ -9,8 +9,9 @@ async function bootstrap() {
   console.log('✅ NestFactory created');
 
   app.enableCors({
-    origin: true,
+    origin: 'https://tickets-ten-pi.vercel.app',
     credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization'],
   });
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
   app.use(cookieParser());
