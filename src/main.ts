@@ -10,6 +10,7 @@ async function bootstrap() {
 
   app.enableCors({
     origin: 'https://tickets-ten-pi.vercel.app',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization'],
   });
