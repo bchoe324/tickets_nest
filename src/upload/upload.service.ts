@@ -5,7 +5,9 @@ import { Express } from 'express';
 
 @Injectable()
 export class UploadService {
-  constructor(private readonly supabaseService: SupabaseService) {}
+  constructor(private readonly supabaseService: SupabaseService) {
+    console.log('🧩 UploadService constructor');
+  }
 
   async uploadImageFile(
     file: Express.Multer.File,

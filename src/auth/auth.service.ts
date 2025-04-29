@@ -16,7 +16,9 @@ export class AuthService {
     private prisma: PrismaService,
     @Inject('SUPABASE_CLIENT') private readonly supabase: SupabaseClient,
     private jwtService: JwtService,
-  ) {}
+  ) {
+    console.log('🧩 AuthService constructor');
+  }
 
   async createUser(authCredentialsDto: AuthCredentialsDto) {
     const { email, password, name } = authCredentialsDto;
