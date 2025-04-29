@@ -11,7 +11,6 @@ async function bootstrap() {
   app.enableCors({
     origin: ['https://tickets-ten-pi.vercel.app'],
     credentials: true,
-    optionsSuccessStatus: 200,
   });
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
   app.use(cookieParser());
