@@ -5,12 +5,6 @@
       "runtime": "nodejs18.x"
     }
   },
-  "builds": [
-    {
-      "src": "dist/src/main.js",
-      "use": "@vercel/node"
-    }
-  ],
   "routes": [
     {
       "src": "/(.*)",
