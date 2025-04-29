@@ -21,4 +21,8 @@ if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
   ],
   exports: ['SUPABASE_CLIENT', SupabaseService],
 })
-export class SupabaseModule {}
+export class SupabaseModule {
+  constructor() {
+    console.log('🧩 SupabaseModule loaded');
+  }
+}

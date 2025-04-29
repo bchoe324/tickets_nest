@@ -8,4 +8,8 @@ import { UploadModule } from 'src/upload/upload.module';
   providers: [TicketService],
   controllers: [TicketController],
 })
-export class TicketModule {}
+export class TicketModule {
+  constructor() {
+    console.log('🧩 TicketModule loaded');
+  }
+}
