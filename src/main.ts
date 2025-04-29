@@ -17,7 +17,7 @@ async function bootstrap() {
   app.use(cookieParser());
   console.log('🚀 About to start listening...');
 
-  await app.listen(process.env.PORT ?? 8080);
+  await app.listen(process.env.PORT ?? 8080, '0.0.0.0');
   console.log('✅ Nest application successfully started');
 }
 bootstrap();
