@@ -7,6 +7,7 @@ export class AppController {
 
   @Get()
   getRoot() {
-    return '✅ NestJS server is running!!!';
+    return `<title>Tickets 서버</title>
+    <h2>Tickets 서버</h2>`;
   }
 }
