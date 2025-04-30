@@ -20,7 +20,13 @@ async function bootstrap() {
       callback(null, true);
     },
     credentials: true,
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    allowedHeaders: [
+      'Origin',
+      'X-Requested-With',
+      'Content-Type',
+      'Accept',
+      'Authorization',
+    ],
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   };
 
