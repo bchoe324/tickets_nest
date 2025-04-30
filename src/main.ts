@@ -1,8 +1,7 @@
 import { ValidationPipe } from '@nestjs/common';
-import { HttpAdapterHost, NestFactory } from '@nestjs/core';
+import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as cookieParser from 'cookie-parser';
-import { NextFunction } from 'express';
 
 async function bootstrap() {
   console.log('🔥 Starting Nest Factory...');
@@ -10,13 +9,19 @@ async function bootstrap() {
   console.log('✅ NestFactory created');
 
   app.enableCors({
-    origin: 'https://tickets-ten-pi.vercel.app',
+    origin: (origin, callback) => {
+      const allowedOrigins = [
+        'https://tickets-ten-pi.vercel.app',
+        'http://localhost:3000',
+      ];
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization'],
-  });
-  app.use((req: Request, res: Response, next: NextFunction) => {
-    req.headers['content-type'] = 'application/json';
-    next();
   });
 
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
