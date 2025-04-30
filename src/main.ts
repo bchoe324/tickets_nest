@@ -22,6 +22,7 @@ async function bootstrap() {
     },
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization'],
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   });
 
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
