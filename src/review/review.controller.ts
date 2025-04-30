@@ -10,7 +10,7 @@ import {
   Delete,
 } from '@nestjs/common';
 import { ReviewService } from './review.service';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CreateReviewDto } from './dto/create-review-dto';
 import { Request } from 'express';
 import { UpdateReviewDto } from './dto/update-review-dto';

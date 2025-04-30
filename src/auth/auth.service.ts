@@ -4,7 +4,7 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { AuthCredentialsDto } from './dto/auth-credentials-dto';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { AuthLoginDto } from './dto/auth-login-dto';

@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TicketService } from './ticket.service';
 import { TicketController } from './ticket.controller';
-import { UploadModule } from 'src/upload/upload.module';
+import { UploadModule } from '../upload/upload.module';
 
 @Module({
   imports: [UploadModule],

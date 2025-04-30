@@ -1,10 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma, Ticket } from '@prisma/client';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { CreateTicketDto } from './dto/create-ticket-dto';
 import { endOfMonth, lastDayOfMonth, startOfMonth } from 'date-fns';
 import { UpdateTicketDto } from './dto/update-ticket-dto';
-import { UploadService } from 'src/upload/upload.service';
+import { UploadService } from '../upload/upload.service';
 
 @Injectable()
 export class TicketService {
