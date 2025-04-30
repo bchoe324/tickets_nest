@@ -4,6 +4,8 @@ import { AppModule } from './app.module';
 import * as cookieParser from 'cookie-parser';
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
 
+const port = process.env.PORT;
+
 async function bootstrap() {
   console.log('🔥 Starting Nest Factory...');
   const app = await NestFactory.create(AppModule);
@@ -28,7 +30,6 @@ async function bootstrap() {
   app.use(cookieParser());
 
   console.log('🚀 About to start listening...');
-  const port = process.env.PORT;
   if (!port) {
     throw new Error('🚨 Missing PORT environment variable');
   }
