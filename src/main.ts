@@ -28,8 +28,11 @@ async function bootstrap() {
   app.use(cookieParser());
 
   console.log('🚀 About to start listening...');
-
-  await app.listen(process.env.PORT ?? 8080, '0.0.0.0');
+  const port = process.env.PORT;
+  if (!port) {
+    throw new Error('🚨 Missing PORT environment variable');
+  }
+  await app.listen(port, '0.0.0.0');
   console.log(`✅ Listening on port ${port}`);
   console.log('✅ Nest application successfully started');
 }
