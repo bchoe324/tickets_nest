@@ -10,15 +10,8 @@ async function bootstrap() {
 
   app.enableCors({
     origin: (origin, callback) => {
-      const allowedOrigins = [
-        'https://tickets-ten-pi.vercel.app',
-        'http://localhost:3000',
-      ];
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
+      console.log('🌐 Incoming request origin:', origin);
+      callback(null, true);
     },
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization'],
