@@ -10,13 +10,6 @@
       }
     }
   ],
-
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "dist/src/main.js"
-    }
-  ],
   "headers": [
     {
       "source": "/(.*)",
@@ -32,6 +25,12 @@
           "value": "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"
         }
       ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "dist/src/main.js"
     }
   ]
 }
