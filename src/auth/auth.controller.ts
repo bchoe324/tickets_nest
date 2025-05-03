@@ -34,10 +34,14 @@ export class AuthController {
     res.cookie('access_token', accessToken, {
       httpOnly: true,
       maxAge: 1000 * 60 * 15,
+      secure: true,
+      sameSite: 'none',
     });
     res.cookie('refresh_token', refreshToken, {
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 30,
+      secure: true,
+      sameSite: 'none',
     });
     return {
       message: '로그인 성공',
@@ -60,6 +64,8 @@ export class AuthController {
     res.cookie('access_token', accessToken, {
       httpOnly: true,
       maxAge: 1000 * 60 * 30,
+      secure: true,
+      sameSite: 'none',
     });
 
     return {
@@ -97,6 +103,8 @@ export class AuthController {
       res.cookie('access_token', newAccessToken, {
         httpOnly: true,
         maxAge: 1000 * 60 * 15,
+        secure: true,
+        sameSite: 'none',
       });
       return {
         message: 'Access token refreshed successfully',

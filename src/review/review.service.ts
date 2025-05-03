@@ -18,15 +18,17 @@ export class ReviewService {
     });
   }
   async getRecentReviews() {
-    return await this.prisma.review.findMany({
-      take: 5,
-      orderBy: {
-        createdAt: 'desc',
-      },
-      include: {
-        show: true,
-      },
-    });
+    return await this.prisma.review
+      .findMany({
+        take: 5,
+        orderBy: {
+          createdAt: 'desc',
+        },
+        include: {
+          show: true,
+        },
+      })
+      .catch((error) => console.error(error));
   }
   async getMyReviews(userId: string) {
     // 리뷰 없으면 빈 배열 반환

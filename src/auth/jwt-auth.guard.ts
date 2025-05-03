@@ -22,12 +22,16 @@ export class JwtAuthGuard implements CanActivate {
     private readonly reflector: Reflector,
   ) {}
   canActivate(context: ExecutionContext): boolean | Promise<boolean> {
-    const request = context.switchToHttp().getRequest<AuthenticatedRequest>();
+    const request: AuthenticatedRequest = context.switchToHttp().getRequest();
     const authHeader = request.headers['authorization'];
-    const token: string | null =
+    let token: string | null =
       authHeader && authHeader.startsWith('Bearer ')
         ? authHeader.split(' ')[1]
         : null;
+    console.log(token);
+    if (!token && request.cookies?.access_token) {
+      token = (request.cookies as Record<string, string>).access_token;
+    }
 
     if (!token) {
       console.log('Token not found in cookies');
@@ -41,6 +45,7 @@ export class JwtAuthGuard implements CanActivate {
         },
       );
       request.user = payload;
+      console.log('jwt 인증 완료');
       return true;
     } catch (error) {
       console.error('Error verifying token:', error);
