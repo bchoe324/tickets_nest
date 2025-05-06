@@ -44,7 +44,7 @@ export class TicketController {
     if (!year || !month) {
       throw new BadRequestException('Year and month are required');
     }
-    return this.ticketService.getMonthlyTickets(year, month, userId);
+    return this.ticketService.getMonthlyTickets(year, month - 1, userId);
   }
 
   @Get(':ticketId')

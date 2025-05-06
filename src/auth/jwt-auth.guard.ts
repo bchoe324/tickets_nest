@@ -6,7 +6,6 @@ import {
 } from '@nestjs/common';
 import { Request } from 'express';
 import { JwtService } from '@nestjs/jwt';
-import { Reflector } from '@nestjs/core';
 
 interface AuthenticatedRequest extends Request {
   user: {
@@ -17,10 +16,7 @@ interface AuthenticatedRequest extends Request {
 
 @Injectable()
 export class JwtAuthGuard implements CanActivate {
-  constructor(
-    private readonly jwtService: JwtService,
-    private readonly reflector: Reflector,
-  ) {}
+  constructor(private readonly jwtService: JwtService) {}
   canActivate(context: ExecutionContext): boolean | Promise<boolean> {
     const request: AuthenticatedRequest = context.switchToHttp().getRequest();
     const authHeader = request.headers['authorization'];
