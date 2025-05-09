@@ -44,7 +44,7 @@ export class AuthController {
       sameSite: 'none',
     });
     return {
-      message: '로그인 성공',
+      message: 'ok',
     };
   }
   @Post('test-login')
@@ -56,28 +56,35 @@ export class AuthController {
         'TEST_EMAIL or TEST_PW environment variables are not set',
       );
     }
-    const { accessToken } = await this.authService.getUserLogin(
-      { email, password },
-      'TEST',
-    );
-
+    const { accessToken, refreshToken } = await this.authService.getUserLogin({
+      email,
+      password,
+    });
     res.cookie('access_token', accessToken, {
       httpOnly: true,
-      maxAge: 1000 * 60 * 30,
+      maxAge: 1000 * 60 * 15,
       secure: true,
       sameSite: 'none',
     });
-
+    res.cookie('refresh_token', refreshToken, {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24 * 30,
+      secure: true,
+      sameSite: 'none',
+    });
     return {
-      message: '로그인 성공',
+      message: 'ok',
     };
   }
 
   @Post('refresh')
   refreshToken(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
-    const refreshToken = (req.cookies as { [key: string]: string })?.[
-      'refresh_token'
-    ];
+    const authHeader = req.headers['authorization'];
+    const refreshToken =
+      authHeader && authHeader.startsWith('Bearer ')
+        ? authHeader.split(' ')[1]
+        : null;
+    console.log('refreshToken', refreshToken);
 
     if (!refreshToken) {
       throw new UnauthorizedException('No refresh token');
@@ -107,7 +114,7 @@ export class AuthController {
         sameSite: 'none',
       });
       return {
-        message: 'Access token refreshed successfully',
+        message: 'ok',
       };
     } catch (error) {
       throw new UnauthorizedException('Invalid refresh token');

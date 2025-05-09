@@ -24,7 +24,7 @@ export class JwtAuthGuard implements CanActivate {
       authHeader && authHeader.startsWith('Bearer ')
         ? authHeader.split(' ')[1]
         : null;
-    console.log(token);
+    console.log('token', token);
     if (!token && request.cookies?.access_token) {
       token = (request.cookies as Record<string, string>).access_token;
     }
