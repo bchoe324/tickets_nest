@@ -80,12 +80,10 @@ export class AuthController {
   @Post('refresh')
   refreshToken(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
     const authHeader = req.headers['authorization'];
-    const refreshToken =
+    const refreshToken: string | null =
       authHeader && authHeader.startsWith('Bearer ')
         ? authHeader.split(' ')[1]
         : null;
-    console.log('refreshToken', refreshToken);
-
     if (!refreshToken) {
       throw new UnauthorizedException('No refresh token');
     }
@@ -107,14 +105,8 @@ export class AuthController {
           expiresIn: '15m',
         },
       );
-      res.cookie('access_token', newAccessToken, {
-        httpOnly: true,
-        maxAge: 1000 * 60 * 15,
-        secure: true,
-        sameSite: 'none',
-      });
       return {
-        message: 'ok',
+        newAccessToken,
       };
     } catch (error) {
       throw new UnauthorizedException('Invalid refresh token');
